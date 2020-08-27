@@ -7,33 +7,33 @@
             <h1>Список товаров</h1>
             <div class="wrapperSelect">
               <div class="__select" :data-state="activeValue" @click="openSelect()">
-              <div class="__select__title" data-default="Option 0">{{ selectCategoryName }}</div>
-              <div class="__select__content">
-                <input
-                  id="singleSelect0"
-                  class="__select__input"
-                  type="radio"
-                  name="singleSelect"
-                  checked
-                />
-                <template v-for="(value, index) in categories">
+                <div class="__select__title" data-default="Option 0">{{ selectCategoryName }}</div>
+                <div class="__select__content">
                   <input
-                    :id="'singleSelect0'+index"
+                    id="singleSelect0"
                     class="__select__input"
                     type="radio"
                     name="singleSelect"
-                    :key="'singleSelect0' + index"
-                    :value="value.id"
-                    v-model="selectCategory"
+                    checked
                   />
-                  <label
-                    :key="'singleSelect1' + index"
-                    :for="'singleSelect0'+index"
-                    class="__select__label"
-                    @click="activeValueCheck(index)"
-                  >{{value.category}}</label>
-                </template>
-              </div>
+                  <template v-for="(value, index) in categories">
+                    <input
+                      :id="'singleSelect0'+index"
+                      class="__select__input"
+                      type="radio"
+                      name="singleSelect"
+                      :key="'singleSelect0' + index"
+                      :value="value.id"
+                      v-model="selectCategory"
+                    />
+                    <label
+                      :key="'singleSelect1' + index"
+                      :for="'singleSelect0'+index"
+                      class="__select__label"
+                      @click="activeValueCheck(index)"
+                    >{{value.category}}</label>
+                  </template>
+                </div>
               </div>
 
               <div class="__select" :data-state="activeValueBrand" @click="openSelectBrand()">
@@ -396,7 +396,7 @@ export default {
     },
     openSelectBrand() {
       if (!this.activeValueBrand) {
-        console.log('this.activeValueBrand', this.activeValueBrand)
+        console.log("this.activeValueBrand", this.activeValueBrand);
         this.activeValueBrand = "activeValueBrand";
       } else {
         this.activeValueBrand = "";
@@ -409,10 +409,12 @@ export default {
     getMaxPrice: function () {
       return Number(_.maxBy(this.products, "price").price);
     },
-    clear: function () {
+    clear() {
       this.inputSearch = "";
       this.selectCategory = 0;
-      this.selectBrand = 0;
+      this.selectCategoryName = "Все категории";
+      this.selectBrand = "Все бренды";
+      this.selectBrandName = "Все бренды";
       this.minPrice = this.getMinPrice();
       this.maxPrice = this.getMaxPrice();
       this.selectSort = "good_id:asc";
@@ -476,8 +478,8 @@ export default {
   width: 230px;
   height: 26px;
   margin: 0 auto;
-// activeValueBrand
-  &[data-state="active"], 
+  // activeValueBrand
+  &[data-state="active"],
   &[data-state="activeValueBrand"] {
     .__select__title {
       &::before {
@@ -491,6 +493,8 @@ export default {
 
     .__select__content {
       opacity: 1;
+      visibility: visible;
+
     }
 
     .__select__label + .__select__input + .__select__label {
@@ -585,7 +589,7 @@ export default {
   transition: all 0.3s ease-out;
 
   opacity: 0;
-  z-index: 8;
+  visibility: hidden
 }
 .__select__input {
   display: none;
