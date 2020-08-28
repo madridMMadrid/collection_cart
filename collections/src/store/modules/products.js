@@ -12,7 +12,7 @@ export default {
         item: (state, getters) => (id) => {
             return getters.itemsMap[id];
         },
-        getProductsInCart: state => state.cartProducts,
+        getProducts: state => state.realproduct,
     },
     mutations: {
         clearItems(state) {
@@ -58,25 +58,35 @@ export default {
             })
         },
         LOAD_ITEM: (state, product) => {
-            // state.lengthProd = product.products.length
-            state.realproduct = product
+            state.realproduct = [...state.realproduct, ...product]
         },
     },
     actions: {
 
         loadItems(context) {
-            let url = `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=18208&group_id=33&option_value_id=791`;
+            let url = [
+                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=33&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=23&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=3&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=34&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=4&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=41&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=44&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=1&option_value_id=778`,
+            ];
             // let url = `https://prime-wood.ru/index.php?route=checkout/test/cart/info`;
+            for (let index = 0; index < url.length; index++) {
+                fetch(url[index], {
+                    method: "GET",
+                    credentials: "include",
+                    withCredentials: true
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+                        context.commit('LOAD_ITEM', json);
+                    });
 
-            fetch(url, {
-                method: "GET",
-                credentials: "include",
-                withCredentials: true
-            })
-                .then((response) => response.json())
-                .then((json) => {
-                    context.commit('LOAD_ITEM', json);
-                });
+            }
         },
         addProduct: (context, product) => {
             context.commit('ADD_PRODUCT', product);

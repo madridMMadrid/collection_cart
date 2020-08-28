@@ -6,7 +6,7 @@
           <div class="col-sm-12">
             <h1>Список товаров</h1>
             <div class="wrapperSelect">
-              <div class="__select" :data-state="activeValue" @click="openSelect()">
+              <div class="__select" :data-state="activeValue" @click="openSelect($event)">
                 <div class="__select__title" data-default="Option 0">{{ selectCategoryName }}</div>
                 <div class="__select__content">
                   <input
@@ -30,7 +30,7 @@
                       :key="'singleSelect1' + index"
                       :for="'singleSelect0'+index"
                       class="__select__label"
-                      @click="activeValueCheck(index)"
+                      @click="activeValueCheck(value.id)"
                     >{{value.category}}</label>
                   </template>
                 </div>
@@ -65,57 +65,82 @@
                   </template>
                 </div>
               </div>
+
+              <div class="__select" :data-state="activeValueOptions" @click="openSelectOptions()">
+                <div class="__select__title" data-default="Option 0">{{ selectOptionsName }}</div>
+                <div class="__select__content">
+                  <input
+                    id="singleSelectOptions0"
+                    class="__select__input"
+                    type="radio"
+                    name="singleSelect"
+                    checked
+                  />
+                  <template v-for="(rule, index) in sortRules">
+                    <input
+                      :id="'singleSelectOptions0'+index"
+                      class="__select__input"
+                      type="radio"
+                      name="singleSelect"
+                      :key="'singleSelectOptions0'+index"
+                      :value="rule.key"
+                      v-model="selectOptions"
+                    />
+                    <label
+                      :key="'singleSelectOptions1'+index"
+                      :for="'singleSelectOptions0'+index"
+                      class="__select__label"
+                      @click="activeValueCheckOptions(rule.key)"
+                    >{{rule.title}}</label>
+                  </template>
+                </div>
+              </div>
+              <input
+                class="input-search"
+                v-model.trim="inputSearch"
+                type="text"
+                placeholder="Поиск по названию товара"
+              />
             </div>
 
             <label>Фильтр по цене</label>
             <input v-model.number="minPrice" type="number" />
             <input v-model.number="maxPrice" type="number" />
 
-            <input v-model.trim="inputSearch" type="text" placeholder="Поиск по названию товара" />
-
-            <select v-model="selectSort">
-              <option v-for="rule in sortRules" :key="rule.key" :value="rule.key">{{ rule.title }}</option>
-            </select>
-
             <button @click="clear" class="primary small">Сбросить фильтры</button>
-            <div class="tab-content d-flex ai-c fw-w product-list">
+            <div class="tab-content product-list">
               <div class="product-card" v-for="product in filteredProducts" :key="product.good_id">
-                <div class="product-card-title">Стол приставной</div>
-                <img class="product-card-image" src="~@/assets/product-table_brown_c.jpg" />
+                <a class="product-card-link" :href="product.href">
+                  <div class="product-card-title">{{ product.name }}</div>
+                  <div class="product-card-image-wrapper">
+                    <img class="product-card-image" :src="product.thumb" />
+                  </div>
+                </a>
                 <div class="product-card-scale">
-                  <div class="product-card-scale-size">90 см</div>
-                  <div class="product-card-scale-size">60 см</div>
-                  <div class="product-card-scale-size">90 см</div>
+                  <div class="product-card-scale-size">{{ product.proportions.length }} см</div>
+                  <div class="product-card-scale-size">{{ product.proportions.width }} см</div>
+                  <div class="product-card-scale-size">{{ product.proportions.height }} см</div>
                 </div>
                 <div class="product-card-info">
-                  <div
-                    class="product-card-info-text green product-key"
-                  >Код товара {{ product.good }}</div>
-                  <div class="product-card-info-text green product-id">ID {{ product.good_id }}</div>
-                  <div class="product-card-info-text green product-id">Бренд {{ product.brand }}</div>
-                  <div class="product-card-info-text green product-id">Рейтинг {{ product.rating }}</div>
-                  <div class="product-card-info-text black">Срок доставки</div>
+                  <div class="product-card-info-text green product-key">Код товара {{ product.sku }}</div>
+                  <div class="product-card-info-text green product-id">ID {{ product.product_id }}</div>
+                  <div class="product-card-info-text black">
+                    Срок доставки {{ product.delivery_days.min }}-{{ product.delivery_days.max }} дней
+                    <a
+                      class="item__compare"
+                      href
+                    ></a>
+                  </div>
                 </div>
-                <div class="product-card-actions">
-                  <svg class="primary-icon product-card-icon" role="button">
-                    <use xlink:href="sprite-manual.svg#compare-icon" />
-                  </svg>
-                </div>
-                <div class="product-card-buy d-flex jc-sb">
+                <div class="product-card-buy">
                   <div class="product-card-buy-price">
-                    <span class="product-card-buy-price-text">{{ product.price }}</span>
+                    <span
+                      class="product-card-buy-price-text"
+                    >{{ (Number(product.price).toFixed()).toString().replace(/(\d{1,3})(?=((\d{3})*)$)/g, " $1") }}</span>
                     <sup class="product-card-buy-price-currency">руб</sup>
                   </div>
-                  <div class="product-card-buy-count d-flex ai-c">
-                    <input class="product-card-buy-count-input" />
-                    <div class="product-card-buy-count-controls">
-                      <div class="more" @click="moreCaunt()">+</div>
-                      <div class="less" @click="lessCaunt()">-</div>
-                    </div>
-                  </div>
-                  <button class="product-card-buy-button button-global button-primary-yellow">
-                    <b-icon icon="cart-dash"></b-icon>
-                  </button>
+                  <PlusMinus />
+                  <button class="product-card-buy-button button-global button-primary-yellow"></button>
                 </div>
               </div>
             </div>
@@ -127,9 +152,14 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
+import PlusMinus from "./PlusMinus";
+import { log } from "util";
 
 export default {
   name: "selectName",
+  components: {
+    PlusMinus,
+  },
   data() {
     return {
       products: [
@@ -262,9 +292,14 @@ export default {
       ],
       categories: [
         { id: 0, category: "Все категории" },
-        { id: 1, category: "Столы" },
-        { id: 2, category: "Стулья" },
-        { id: 3, category: "Пуфики" },
+        { id: 33, category: "Столы" },
+        { id: 23, category: "Переговорные столы" },
+        { id: 3, category: "Бенч-системы" },
+        { id: 34, category: "Тумбы" },
+        { id: 4, category: "Брифинг и приставки" },
+        { id: 41, category: "Шкафы" },
+        { id: 44, category: "Экраны" },
+        { id: 1, category: "Аксессуары" },
       ],
       brands: [
         {
@@ -298,9 +333,9 @@ export default {
       ],
       sortRules: [
         { key: "good_id:asc", title: "По порядку" },
-        { key: "rating:desc", title: "По рейтингу" },
-        { key: "price:asc", title: "По цене, сначала дешевые" },
-        { key: "price:desc", title: "По цене, сначала дорогие" },
+        // { key: "rating:desc", title: "По рейтингу" },
+        { key: "price:asc", title: "Сначала дешевые" },
+        { key: "price:desc", title: "Сначала дорогие" },
       ],
       inputSearch: "",
       selectCategory: 0,
@@ -313,20 +348,24 @@ export default {
       activeValue: "",
       optionsValue: "",
       selectedValue: "Все категории",
+      selectOptions: "",
 
       activeValueBrand: "",
       selectBrandName: "Все бренды",
+
+      activeValueOptions: "",
+      selectOptionsName: "По порядку",
     };
   },
   computed: {
-    filteredProducts: function () {
+    ...mapGetters("products", ["getProducts"]),
+    filteredProducts() {
       // Фильтруем товары
-      var filtered = this.products
+      var filtered = this.getProducts
         // По категории
         .filter((product) => {
           return (
-            this.selectCategory == 0 ||
-            product.category_id == this.selectCategory
+            this.selectCategory == 0 || product.group_id == this.selectCategory
           );
         })
 
@@ -350,7 +389,7 @@ export default {
         .filter((product) => {
           return (
             this.inputSearch == "" ||
-            product.good
+            product.name
               .toLowerCase()
               .indexOf(this.inputSearch.toLowerCase()) !== -1
           );
@@ -387,7 +426,15 @@ export default {
       this.selectBrandName = id;
       this.activeValueBrand = "";
     },
-    openSelect() {
+    activeValueCheckOptions(index) {
+      let id = this.sortRules.find((x) => x.key == index).title;
+      this.selectOptionsName = id;
+      this.activeValueOptions = "";
+      this.selectSort = index;
+    },
+
+    openSelect(e) {
+      console.log(e);
       if (!this.activeValue) {
         this.activeValue = "active";
       } else {
@@ -396,10 +443,17 @@ export default {
     },
     openSelectBrand() {
       if (!this.activeValueBrand) {
-        console.log("this.activeValueBrand", this.activeValueBrand);
         this.activeValueBrand = "activeValueBrand";
       } else {
         this.activeValueBrand = "";
+      }
+    },
+    openSelectOptions(e) {
+      console.log(e);
+      if (!this.activeValueOptions) {
+        this.activeValueOptions = "activeValueOptions";
+      } else {
+        this.activeValueOptions = "";
       }
     },
 
@@ -422,42 +476,153 @@ export default {
   },
 };
 </script>
-<style lang="scss" scaped>
-.product-card {
-  flex: 0 0 23%;
-}
-.product-card-buy {
-  &-count {
-    margin: 0;
-    &-controls {
-      & .more,
-      .less {
-        height: 15px;
-        width: 25px;
-        background: #c5c4c4;
-        line-height: 0.9;
-        -webkit-touch-callout: none; /* iOS Safari */
-        -webkit-user-select: none; /* Chrome/Safari/Opera */
-        -khtml-user-select: none; /* Konqueror */
-        -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-        user-select: none;
+<style lang="scss" scoped>
+.tab-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-family: PT Sans, Arial, sans-serif;
+  .input-search {
+    border: 1px solid #c7ccd1;
+    border-radius: 5px;
+    padding: 2px 16px;
+  }
+  .product {
+    &-card {
+      border: 1px solid #e2e0d3;
+      box-shadow: 0 30px 7px -33px rgba(0, 0, 0, 0.9);
+      width: 218px;
+      margin: 0 0 25px 5px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      &-link {
+        color: #56504c;
         &:hover {
-          cursor: pointer;
-          box-shadow: 0 0 40px rgba(0, 0, 0, 0.1) inset;
+          color: #00a75f;
+          text-decoration: none;
+        }
+      }
+      &::before {
+        content: "";
+        border-top: 7px solid #e2e0d3;
+        position: absolute;
+        bottom: -7px;
+        border-left: 40px solid transparent;
+        left: 5px;
+      }
+      &::after {
+        content: "";
+        border-right: 40px solid transparent;
+        right: 5px;
+        border-top: 7px solid #e2e0d3;
+        position: absolute;
+        bottom: -7px;
+        transition: all 0.2s ease;
+      }
+
+      &-scale {
+        font-size: 13px;
+        padding: 2px 10px;
+        display: flex;
+        justify-content: center;
+        color: #858585;
+      }
+      &-info {
+        font-size: 13px;
+        padding-bottom: 12px;
+        &-text {
+          &.green {
+            color: #00a75f;
+            font-size: 12.5px;
+          }
+          &.black {
+            display: flex;
+            justify-content: center;
+            & .item__compare {
+              background: url("https://prime-wood.ru/catalog/view/javascript/skin/images/compare.svg")
+                no-repeat 50% 50%;
+              height: 17px;
+              text-decoration: none;
+              width: 17px;
+              display: block;
+              -webkit-filter: grayscale(100%);
+              filter: grayscale(100%);
+              margin-left: 5px;
+              &:hover {
+                -webkit-filter: grayscale(1%);
+                filter: grayscale(1%);
+              }
+            }
+          }
+        }
+      }
+      &-title {
+        line-height: 15px;
+        font-size: 13 px;
+        font-weight: 700;
+        padding: 10px 5px;
+        position: relative;
+        text-align: center;
+      }
+
+      &-image {
+        max-width: 100%;
+        max-height: 100%;
+        padding: 0 15px 10px;
+        &-wrapper {
+          height: 130px;
+          border-bottom: 1px solid #e2e0d3;
+        }
+      }
+      &-buy {
+        display: flex;
+        justify-content: space-around;
+        background-color: #f9f8f3;
+        overflow: hidden;
+        padding: 9px 9px 9px 5px;
+        align-items: center;
+        &-button {
+          background: #71c73b;
+          border: none;
+          height: 30px;
+          border-radius: 3px;
+          width: 30px;
+          position: relative;
+          &::before {
+            content: "";
+            background: url("https://prime-wood.ru/catalog/view/javascript/skin/images/icons.png")
+              no-repeat 0 -80px;
+            height: 20px;
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 20px;
+          }
+        }
+        &-price {
+          &-text {
+            font-size: 25px;
+          }
+          &-currency {
+            font-size: 13px;
+            padding-left: 5px;
+          }
+        }
+
+        &-price {
+          display: flex;
+          &-currency {
+            line-height: inherit;
+            top: 0;
+          }
+        }
+        &.jc-sb {
+          align-items: center;
         }
       }
     }
-  }
-  &-price {
-    display: flex;
-    &-currency {
-      line-height: inherit;
-      top: 0;
-    }
-  }
-  &.jc-sb {
-    align-items: center;
   }
 }
 
@@ -478,9 +643,9 @@ export default {
   width: 230px;
   height: 26px;
   margin: 0 auto;
-  // activeValueBrand
   &[data-state="active"],
-  &[data-state="activeValueBrand"] {
+  &[data-state="activeValueBrand"],
+  &[data-state="activeValueOptions"] {
     .__select__title {
       &::before {
         transform: translate(-3px, -50%) rotate(-45deg);
@@ -494,7 +659,6 @@ export default {
     .__select__content {
       opacity: 1;
       visibility: visible;
-
     }
 
     .__select__label + .__select__input + .__select__label {
@@ -509,7 +673,6 @@ export default {
   width: 100%;
   height: 100%;
   padding: 2px 16px;
-
   border-radius: 5px;
   border: solid 1px #c7ccd1;
 
@@ -518,19 +681,14 @@ export default {
   &::before,
   &::after {
     content: "";
-
     position: absolute;
     top: 50%;
     right: 16px;
-
     display: block;
     width: 10px;
     height: 2px;
-
     transition: all 0.3s ease-out;
-
     background-color: #333333;
-
     transform: translate(-3px, -50%) rotate(45deg);
   }
   &::after {
@@ -552,19 +710,13 @@ export default {
   padding: 8px 16px;
   margin: 0 auto;
   margin-bottom: 10px;
-
   border: solid 1px #c7ccd1;
   border-radius: 5px;
-
   transition: all 0.2s ease-out;
-
   cursor: pointer;
-
   font-weight: bold;
-
   background-color: #ffffff;
   color: #333333;
-
   &:hover {
     background-color: #d8093a;
     color: #ffffff;
@@ -589,7 +741,8 @@ export default {
   transition: all 0.3s ease-out;
 
   opacity: 0;
-  visibility: hidden
+  visibility: hidden;
+  z-index: 9;
 }
 .__select__input {
   display: none;
@@ -603,17 +756,16 @@ export default {
   }
 }
 .__select__label {
+  cursor: pointer;
   display: flex;
   align-items: center;
   width: 100%;
-  height: 40px;
+  height: 30px;
   padding: 0 16px;
-
   transition: all 0.2s ease-out;
-
-  cursor: pointer;
-
   overflow: hidden;
+  font-size: 13px;
+  margin: 0;
 
   & + input + & {
     border-top: 0 solid #c7ccd160;
