@@ -12,20 +12,23 @@
 
     <div class="tabs">
       <input type="radio" name="tab-btn" id="tab-btn-1" value checked />
-      <label for="tab-btn-1">Вкладка 1</label>
+      <label for="tab-btn-1">
+        <span>Вкладка 1</span>
+      </label>
       <input type="radio" name="tab-btn" id="tab-btn-2" value />
-      <label for="tab-btn-2">Вкладка 2</label>
+      <label for="tab-btn-2">
+        <span>Вкладка 2</span>
+      </label>
       <input type="radio" name="tab-btn" id="tab-btn-3" value />
-      <label for="tab-btn-3">Вкладка 3</label>
+      <label for="tab-btn-3">
+        <span>Вкладка 3</span>
+      </label>
 
       <div id="content-1">
         <ProductFilter />
       </div>
       <div id="content-2">
-        <div class="test">
-          some text
-        </div>
-
+        <div class="test">some text</div>
       </div>
       <div id="content-3">Содержимое 3...</div>
     </div>
@@ -62,9 +65,7 @@ export default {
 .tabs > div {
   /* скрыть контент по умолчанию */
   display: none;
-  border: 1px solid #e0e0e0;
-  padding: 10px 15px;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 /* отобразить контент, связанный с вабранной радиокнопкой (input type="radio") */
@@ -77,26 +78,38 @@ export default {
 .tabs > label {
   display: inline-block;
   text-align: center;
-  vertical-align: middle;
+  vertical-align: text-bottom;
   user-select: none;
   background-color: #f5f5f5;
   border: 1px solid #e0e0e0;
+  border-radius: 5px 5px 0 0;
   padding: 2px 8px;
-  font-size: 16px;
+  font-size: 14px;
+  color: #ada587;
   line-height: 1.5;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
   cursor: pointer;
   position: relative;
   top: 1px;
   margin-bottom: -0.5px;
+  & span {
+    display: flex;
+    margin: auto;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .tabs > label:not(:first-of-type) {
-  border-left: none;
+  margin-left: 4px;
 }
 
 .tabs > input[type="radio"]:checked + label {
   background-color: #fff;
   border-bottom: 1px solid #fff;
+  height: 34px;
+  font-weight: 700;
+  color: #56504c;
 }
 </style>

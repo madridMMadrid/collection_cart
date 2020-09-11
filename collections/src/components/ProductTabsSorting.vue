@@ -4,38 +4,20 @@
       <div class="container_product_tabs">
         <div class="row">
           <div class="col-sm-12">
-            <h1>Список товаров</h1>
             <div class="wrapperSelect">
-              <div class="__select" :data-state="activeValue" @click="openSelect($event)">
-                <div class="__select__title" data-default="Option 0">{{ selectCategoryName }}</div>
-                <div class="__select__content">
+              <div class="list_category">
+                <div class="checkbox" v-for="(value, index) in categories" :key="index">
                   <input
-                    id="singleSelect0"
-                    class="__select__input"
+                    class="custom-checkbox"
                     type="radio"
-                    name="singleSelect"
-                    checked
+                    :id="'color'+index"
+                    name="color"
+                    :value="value.id"
+                    v-model="selectCategory"
                   />
-                  <template v-for="(value, index) in categories">
-                    <input
-                      :id="'singleSelect0'+index"
-                      class="__select__input"
-                      type="radio"
-                      name="singleSelect"
-                      :key="'singleSelect0' + index"
-                      :value="value.id"
-                      v-model="selectCategory"
-                    />
-                    <label
-                      :key="'singleSelect1' + index"
-                      :for="'singleSelect0'+index"
-                      class="__select__label"
-                      @click="activeValueCheck(value.id)"
-                    >{{value.category}}</label>
-                  </template>
+                  <label :for="'color'+index">{{value.category}}</label>
                 </div>
               </div>
-
               <!-- <div class="__select" :data-state="activeValueBrand" @click="openSelectBrand()">
                 <div class="__select__title" data-default="Option 0">{{ selectBrandName }}</div>
                 <div class="__select__content">
@@ -64,50 +46,53 @@
                     >{{brand.brand}}</label>
                   </template>
                 </div>
-              </div> -->
+              </div>-->
 
-              <div class="__select" :data-state="activeValueOptions" @click="openSelectOptions()">
-                <div class="__select__title" data-default="Option 0">{{ selectOptionsName }}</div>
-                <div class="__select__content">
-                  <input
-                    id="singleSelectOptions0"
-                    class="__select__input"
-                    type="radio"
-                    name="singleSelect"
-                    checked
-                  />
-                  <template v-for="(rule, index) in sortRules">
+              <div class="buttom_sort">
+                <span>Сортировать:</span>
+                <div class="__select" :data-state="activeValueOptions" @click="openSelectOptions()">
+                  <div class="__select__title" data-default="Option 0">{{ selectOptionsName }}</div>
+                  <div class="__select__content">
                     <input
-                      :id="'singleSelectOptions0'+index"
+                      id="singleSelectOptions0"
                       class="__select__input"
                       type="radio"
                       name="singleSelect"
-                      :key="'singleSelectOptions0'+index"
-                      :value="rule.key"
-                      v-model="selectOptions"
+                      checked
                     />
-                    <label
-                      :key="'singleSelectOptions1'+index"
-                      :for="'singleSelectOptions0'+index"
-                      class="__select__label"
-                      @click="activeValueCheckOptions(rule.key)"
-                    >{{rule.title}}</label>
-                  </template>
+                    <template v-for="(rule, index) in sortRules">
+                      <input
+                        :id="'singleSelectOptions0'+index"
+                        class="__select__input"
+                        type="radio"
+                        name="singleSelect"
+                        :key="'singleSelectOptions0'+index"
+                        :value="rule.key"
+                        v-model="selectOptions"
+                      />
+                      <label
+                        :key="'singleSelectOptions1'+index"
+                        :for="'singleSelectOptions0'+index"
+                        class="__select__label"
+                        @click="activeValueCheckOptions(rule.key)"
+                      >{{rule.title}}</label>
+                    </template>
+                  </div>
                 </div>
               </div>
-              <input
+              <!-- <input
                 class="input-search"
                 v-model.trim="inputSearch"
                 type="text"
                 placeholder="Поиск по названию товара"
-              />
+              />-->
             </div>
 
-            <label>Фильтр по цене</label>
+            <!-- <label>Фильтр по цене</label>
             <input v-model.number="minPrice" type="number" />
-            <input v-model.number="maxPrice" type="number" />
+            <input v-model.number="maxPrice" type="number" />-->
 
-            <button @click="clear" class="primary small">Сбросить фильтры</button>
+            <!-- <button @click="clear" class="primary small">Сбросить фильтры</button> -->
             <div class="tab-content product-list">
               <div class="product-card" v-for="product in filteredProducts" :key="product.good_id">
                 <a class="product-card-link" :href="product.href">
@@ -476,12 +461,70 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+/* для элемента input c type="checkbox" */
+.custom-checkbox {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+/* для элемента label, связанного с .custom-checkbox */
+.custom-checkbox + label {
+  display: flex;
+  align-items: center;
+  user-select: none;
+  position: relative;
+  outline: none !important;
+  flex-direction: column;
+  color: #b8ad87;
+  max-width: 90px;
+  text-align: center;
+  
+  &:hover {
+    cursor: pointer;
+  }
+}
+/* создание в label псевдоэлемента before со следующими стилями */
+.custom-checkbox + label::before {
+  content: "";
+  display: inline-block;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-repeat: no-repeat;
+  background-position: -118px 1px;
+  background-image: url(https://prime-wood.ru/catalog/view/javascript/skin/images/icons.png);
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  margin-bottom: 10px;
+}
+
+/* стили при наведении курсора на checkbox */
+.custom-checkbox:not(:disabled):not(:checked) + label:hover::before {
+  /* border-color: #b3d7ff; */
+  outline: 0;
+  outline-offset: 0;
+}
+/* стили для чекбокса, находящегося в фокусе и не находящегося в состоянии checked */
+.custom-checkbox:focus:not(:checked) + label::before {
+  border-color: #80bdff;
+}
+
+/* стили для чекбокса, находящегося в состоянии checked */
+.custom-checkbox:checked + label::before {
+  background-color: #fff;
+  box-shadow: 1px 4px 4px 4px #5959596b;
+  -webkit-filter: grayscale(1%);
+  filter: grayscale(1%);
+}
+.custom-checkbox:checked + label::after {
+  opacity: 1;
+}
 .tab-content {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  font-family: PT Sans, Arial, sans-serif;
-  padding: 30px 10px;
+  justify-content: space-between;
+  padding: 30px 0px;
+
   .input-search {
     border: 1px solid #c7ccd1;
     border-radius: 5px;
@@ -492,7 +535,7 @@ export default {
       border: 1px solid #e2e0d3;
       box-shadow: 0 30px 7px -33px rgba(0, 0, 0, 0.9);
       width: 218px;
-      margin: 0 0 25px 5px;
+      margin: 0 0 25px 0px;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -640,12 +683,20 @@ export default {
 }
 .wrapperSelect {
   display: flex;
+  flex-direction: column;
+  .list_category {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-left: -6px;
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+  }
 }
 .__select {
-  width: 100%;
+  width: auto;
   max-width: 230px;
   height: 26px;
-  margin: 0 auto;
   position: relative;
   &[data-state="active"],
   &[data-state="activeValueBrand"],
@@ -667,18 +718,16 @@ export default {
 
     .__select__label + .__select__input + .__select__label {
       max-height: 40px;
-      border-top-width: 1px;
     }
   }
 }
 .__select__title {
   display: flex;
   align-items: center;
-  width: 100%;
+  width: auto;
   height: 100%;
-  padding: 2px 16px;
+  padding: 2px 35px 2px 16px;
   border-radius: 5px;
-  border: solid 1px #c7ccd1;
   position: relative;
   cursor: pointer;
 
@@ -700,11 +749,8 @@ export default {
   }
 
   &:hover {
-    border-color: #d8093a;
-
     &::before,
     &::after {
-      background-color: #d8093a;
     }
   }
 }
@@ -722,28 +768,20 @@ export default {
   background-color: #ffffff;
   color: #333333;
   &:hover {
-    background-color: #d8093a;
-    color: #ffffff;
+    color: #ff9e23;
   }
 }
 .__select__content {
   position: absolute;
   top: 26px;
   left: 3px;
-
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   width: calc(100% - 6px);
-
   background-color: #ffffff;
-
-  border: 1px solid #c7ccd1;
-  border-top: none;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-out;
-
   opacity: 0;
   visibility: hidden;
   z-index: 9;
@@ -776,9 +814,11 @@ export default {
   }
 
   &:hover {
-    background-color: #d8093a !important;
-
-    color: #ffffff;
+    color: #ff9e23;
   }
+}
+.buttom_sort {
+  display: flex;
+  align-items: center;
 }
 </style>

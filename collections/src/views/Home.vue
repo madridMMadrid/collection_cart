@@ -64,11 +64,6 @@ button {
     outline: 0
 }
 
-button,
-input {
-    font-family: PT Sans
-}
-
 ul {
     list-style-type: none
 }
@@ -82,9 +77,9 @@ input {
   justify-content: center;
 }
 .container_wrapper {
-  max-width: 1120px;
+  max-width: 900px;
   display: flex;
-  padding: 0 10px;
+  // padding: 0 10px;
   width: 100%;
 }
 </style>
