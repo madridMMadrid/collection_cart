@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <div class="container">
+      <div class="container_product_tabs">
         <div class="row">
           <div class="col-sm-12">
             <h1>Список товаров</h1>
@@ -36,7 +36,7 @@
                 </div>
               </div>
 
-              <div class="__select" :data-state="activeValueBrand" @click="openSelectBrand()">
+              <!-- <div class="__select" :data-state="activeValueBrand" @click="openSelectBrand()">
                 <div class="__select__title" data-default="Option 0">{{ selectBrandName }}</div>
                 <div class="__select__content">
                   <input
@@ -64,7 +64,7 @@
                     >{{brand.brand}}</label>
                   </template>
                 </div>
-              </div>
+              </div> -->
 
               <div class="__select" :data-state="activeValueOptions" @click="openSelectOptions()">
                 <div class="__select__title" data-default="Option 0">{{ selectOptionsName }}</div>
@@ -481,6 +481,7 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   font-family: PT Sans, Arial, sans-serif;
+  padding: 30px 10px;
   .input-search {
     border: 1px solid #c7ccd1;
     border-radius: 5px;
@@ -531,6 +532,7 @@ export default {
       &-info {
         font-size: 13px;
         padding-bottom: 12px;
+        text-align: center;
         &-text {
           &.green {
             color: #00a75f;
@@ -570,9 +572,11 @@ export default {
         max-width: 100%;
         max-height: 100%;
         padding: 0 15px 10px;
+        box-sizing: border-box;
         &-wrapper {
           height: 130px;
           border-bottom: 1px solid #e2e0d3;
+          text-align: center;
         }
       }
       &-buy {
@@ -585,9 +589,9 @@ export default {
         &-button {
           background: #71c73b;
           border: none;
-          height: 30px;
+          height: 2rem;
           border-radius: 3px;
-          width: 30px;
+          width: 2rem;
           position: relative;
           &::before {
             content: "";
@@ -638,10 +642,11 @@ export default {
   display: flex;
 }
 .__select {
-  position: relative;
-  width: 230px;
+  width: 100%;
+  max-width: 230px;
   height: 26px;
   margin: 0 auto;
+  position: relative;
   &[data-state="active"],
   &[data-state="activeValueBrand"],
   &[data-state="activeValueOptions"] {
@@ -674,7 +679,7 @@ export default {
   padding: 2px 16px;
   border-radius: 5px;
   border: solid 1px #c7ccd1;
-
+  position: relative;
   cursor: pointer;
 
   &::before,

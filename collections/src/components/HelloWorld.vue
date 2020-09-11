@@ -131,6 +131,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.l-container {
+  width: 100%;
+}
 .product__chars {
   margin-top: 20px;
 }

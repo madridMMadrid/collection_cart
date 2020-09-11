@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper_button_array">
     <div class="product-card-buy-count d-flex ai-c">
-      <input class="product-card-buy-count-input" type="number" :value="value" />
+      <input class="product-card-buy-count-input" type="text" :value="value" />
       <div class="product-card-buy-count-controls">
         <div class="more" @click="moreCaunt()"></div>
         <div class="less" @click="lessCaunt()"></div>
@@ -79,22 +79,23 @@ export default {
         }
         &-count {
           margin: 0;
+          display: flex;
           &-input {
             border: 1px solid #e2e0d3;
             border-radius: 3px 0 0 3px;
             color: #a79e7e;
-            height: 30px;
+            height: 2rem;
+            width: 2rem;
             padding: 2px;
             text-align: center;
-            width: 30px;
             vertical-align: middle;
             margin: 0;
           }
           &-controls {
             & .more,
             .less {
-              height: 15px;
-              width: 20px;
+              height: 1rem;
+              width: 1rem;
               background: #f3f1ef;
               line-height: 0.9;
               -webkit-touch-callout: none; /* iOS Safari */
