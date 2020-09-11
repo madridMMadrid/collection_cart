@@ -2,5 +2,6 @@ module.exports = {
     css: {
         sourceMap: false
     },
-    productionSourceMap: false
+    productionSourceMap: false,
+    outputDir: '../dist',
 }

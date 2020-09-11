@@ -340,10 +340,15 @@ export default {
 
       activeValueOptions: "",
       selectOptionsName: "По порядку",
+      category: null,
     };
   },
   computed: {
-    ...mapGetters("products", ["getProducts"]),
+    ...mapGetters("products", ["getProducts", "getTest"]),
+    getProd() {
+     var test = this.getTest;
+     return test
+    },
     filteredProducts() {
       // Фильтруем товары
       var filtered = this.getProducts
@@ -479,7 +484,7 @@ export default {
   color: #b8ad87;
   max-width: 90px;
   text-align: center;
-  
+
   &:hover {
     cursor: pointer;
   }

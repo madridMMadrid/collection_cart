@@ -4,6 +4,7 @@ export default {
         cartProducts: [],
         realproduct: [],
         lengthProd: 0,
+        test: []
     },
     getters: {
         items(state) {
@@ -13,6 +14,7 @@ export default {
             return getters.itemsMap[id];
         },
         getProducts: state => state.realproduct,
+        getTest: state => state.test
     },
     mutations: {
         clearItems(state) {
@@ -59,21 +61,30 @@ export default {
         },
         LOAD_ITEM: (state, product) => {
             state.realproduct = [...state.realproduct, ...product]
+            state.test = window.currentParamPage
         },
     },
     actions: {
 
         loadItems(context) {
-            let url = [
-                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=33&option_value_id=778`,
-                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=23&option_value_id=778`,
-                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=3&option_value_id=778`,
-                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=34&option_value_id=778`,
-                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=4&option_value_id=778`,
-                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=41&option_value_id=778`,
-                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=44&option_value_id=778`,
-                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=1&option_value_id=778`,
-            ];
+            // let url = [
+            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=33&option_value_id=778`,
+            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=23&option_value_id=778`,
+            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=3&option_value_id=778`,
+            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=34&option_value_id=778`,
+            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=4&option_value_id=778`,
+            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=41&option_value_id=778`,
+            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=44&option_value_id=778`,
+            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=1&option_value_id=778`,
+            // ];
+            var url = []
+            let tab_groups = window.currentParamPage.tab_groups
+            let product_id = window.currentParamPage.product_id
+            for (let index = 0; index < tab_groups.length; index++) {
+                let urlString = `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=${product_id}=&group_id=${tab_groups[index].group_id}`
+                url.push(urlString)
+            }
+
             // let url = `https://prime-wood.ru/index.php?route=checkout/test/cart/info`;
             for (let index = 0; index < url.length; index++) {
                 fetch(url[index], {

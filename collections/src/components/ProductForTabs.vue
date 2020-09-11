@@ -11,26 +11,26 @@
     </b-tabs>-->
 
     <div class="tabs">
-      <input type="radio" name="tab-btn" id="tab-btn-1" value checked />
-      <label for="tab-btn-1">
+      <input type="radio" class="tabs_input_hidden no_style" name="tab-btn" id="tab-btn-1" value checked />
+      <label class="tabs_label" for="tab-btn-1">
         <span>Вкладка 1</span>
       </label>
-      <input type="radio" name="tab-btn" id="tab-btn-2" value />
-      <label for="tab-btn-2">
+      <input type="radio" class="tabs_input_hidden no_style" name="tab-btn" id="tab-btn-2" value />
+      <label class="tabs_label" for="tab-btn-2">
         <span>Вкладка 2</span>
       </label>
-      <input type="radio" name="tab-btn" id="tab-btn-3" value />
-      <label for="tab-btn-3">
+      <input type="radio" class="tabs_input_hidden no_style" name="tab-btn" id="tab-btn-3" value />
+      <label class="tabs_label" for="tab-btn-3">
         <span>Вкладка 3</span>
       </label>
 
-      <div id="content-1">
+      <div class="tabs_content" id="content-1">
         <ProductFilter />
       </div>
-      <div id="content-2">
+      <div class="tabs_content" id="content-2">
         <div class="test">some text</div>
       </div>
-      <div id="content-3">Содержимое 3...</div>
+      <div class="tabs_content" id="content-3">Содержимое 3...</div>
     </div>
   </div>
 </template>
@@ -58,11 +58,11 @@ export default {
   text-align: left;
 }
 
-.tabs > input[type="radio"] {
+.tabs > input[type="radio"].tabs_input_hidden {
   display: none;
 }
 
-.tabs > div {
+.tabs > div.tabs_content {
   /* скрыть контент по умолчанию */
   display: none;
   font-size: 15px;
@@ -75,7 +75,7 @@ export default {
   display: block;
 }
 
-.tabs > label {
+.tabs > label.tabs_label {
   display: inline-block;
   text-align: center;
   vertical-align: text-bottom;
@@ -101,11 +101,11 @@ export default {
   }
 }
 
-.tabs > label:not(:first-of-type) {
+.tabs > label.tabs_label:not(:first-of-type) {
   margin-left: 4px;
 }
 
-.tabs > input[type="radio"]:checked + label {
+.tabs > input[type="radio"].tabs_input_hidden:checked + label.tabs_label {
   background-color: #fff;
   border-bottom: 1px solid #fff;
   height: 34px;
