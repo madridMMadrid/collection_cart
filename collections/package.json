@@ -3,8 +3,10 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "vue-cli-service serve",
-        "build": "vue-cli-service build"
+        "dev": "vue-cli-service serve --open",
+        "buildReport": "vue-cli-service build --report-json",
+        "createnode": "node buildCssJs.js",
+        "build": "concurrently \"npm run buildReport\" && npm run createnode "
     },
     "dependencies": {
         "@chenfengyuan/vue-carousel": "^1.0.5",

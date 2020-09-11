@@ -65,22 +65,22 @@ export default {
 
         loadItems(context) {
             let url = [
-                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=33&option_value_id=778`,
-                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=23&option_value_id=778`,
-                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=3&option_value_id=778`,
-                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=34&option_value_id=778`,
-                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=4&option_value_id=778`,
-                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=41&option_value_id=778`,
-                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=44&option_value_id=778`,
-                `https://prime-wood.ru/index.php?route=api/test/product_group&_product_id=17539&group_id=1&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=33&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=23&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=3&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=34&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=4&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=41&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=44&option_value_id=778`,
+                `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=1&option_value_id=778`,
             ];
             // let url = `https://prime-wood.ru/index.php?route=checkout/test/cart/info`;
             for (let index = 0; index < url.length; index++) {
                 fetch(url[index], {
-                    method: "GET",
-                    credentials: "include",
-                    withCredentials: true
-                })
+                        method: "GET",
+                        credentials: "include",
+                        withCredentials: true
+                    })
                     .then((response) => response.json())
                     .then((json) => {
                         context.commit('LOAD_ITEM', json);
@@ -118,4 +118,3 @@ export default {
     }
 
 };
-

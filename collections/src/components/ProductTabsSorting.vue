@@ -449,7 +449,6 @@ export default {
       }
     },
     openSelectOptions(e) {
-      console.log(e);
       if (!this.activeValueOptions) {
         this.activeValueOptions = "activeValueOptions";
       } else {
