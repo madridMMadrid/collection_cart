@@ -13,15 +13,19 @@
     <div class="tabs">
       <input type="radio" class="tabs_input_hidden no_style" name="tab-btn" id="tab-btn-1" value checked />
       <label class="tabs_label" for="tab-btn-1">
-        <span>Вкладка 1</span>
+        <span>Элементы комплектации</span>
       </label>
       <input type="radio" class="tabs_input_hidden no_style" name="tab-btn" id="tab-btn-2" value />
       <label class="tabs_label" for="tab-btn-2">
-        <span>Вкладка 2</span>
+        <span>Информация коллекции</span>
       </label>
       <input type="radio" class="tabs_input_hidden no_style" name="tab-btn" id="tab-btn-3" value />
       <label class="tabs_label" for="tab-btn-3">
-        <span>Вкладка 3</span>
+        <span>Отзывы</span>
+      </label>
+       <input type="radio" class="tabs_input_hidden no_style" name="tab-btn" id="tab-btn-4" value />
+      <label class="tabs_label" for="tab-btn-4">
+        <span>Вопрос ответ</span>
       </label>
 
       <div class="tabs_content" id="content-1">
@@ -31,6 +35,7 @@
         <div class="test">some text</div>
       </div>
       <div class="tabs_content" id="content-3">Содержимое 3...</div>
+      <div class="tabs_content" id="content-4">Содержимое 4...</div>
     </div>
   </div>
 </template>

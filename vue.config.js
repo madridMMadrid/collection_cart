@@ -3,5 +3,5 @@ module.exports = {
         sourceMap: false
     },
     productionSourceMap: false,
-    outputDir: '../dist',
+    outputDir: './dist',
 }

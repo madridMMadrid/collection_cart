@@ -67,16 +67,9 @@ export default {
     actions: {
 
         loadItems(context) {
-            // let url = [
-            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=33&option_value_id=778`,
-            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=23&option_value_id=778`,
-            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=3&option_value_id=778`,
-            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=34&option_value_id=778`,
-            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=4&option_value_id=778`,
-            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=41&option_value_id=778`,
-            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=44&option_value_id=778`,
-            //     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=1&option_value_id=778`,
-            // ];
+
+            let data = process.env.NODE_ENV !== 'production' ? 'https://prime-wood.ru/' : ''
+
             var url = []
             let tab_groups = window.currentParamPage.tab_groups
             let product_id = window.currentParamPage.product_id
@@ -84,8 +77,6 @@ export default {
                 let urlString = `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=${product_id}=&group_id=${tab_groups[index].group_id}`
                 url.push(urlString)
             }
-
-            // let url = `https://prime-wood.ru/index.php?route=checkout/test/cart/info`;
             for (let index = 0; index < url.length; index++) {
                 fetch(url[index], {
                         method: "GET",
@@ -96,8 +87,10 @@ export default {
                     .then((json) => {
                         context.commit('LOAD_ITEM', json);
                     });
-
             }
+
+
+
         },
         addProduct: (context, product) => {
             context.commit('ADD_PRODUCT', product);
