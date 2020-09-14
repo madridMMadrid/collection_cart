@@ -1,10 +1,16 @@
+import Vue from 'vue';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+
+Vue.use(VueAxios, axios)
 export default {
     namespaced: true,
     state: {
         cartProducts: [],
         realproduct: [],
         lengthProd: 0,
-        test: []
+        test: [],
+        categories: null
     },
     getters: {
         items(state) {
@@ -14,7 +20,10 @@ export default {
             return getters.itemsMap[id];
         },
         getProducts: state => state.realproduct,
-        getTest: state => state.test
+        getTest: state => state.test,
+        categories: state => {
+            return state.categories;
+        }
     },
     mutations: {
         clearItems(state) {
@@ -63,30 +72,67 @@ export default {
             state.realproduct = [...state.realproduct, ...product]
             state.test = window.currentParamPage
         },
+        SET_TODO: (state, payload) => {
+            state.categories = payload
+        },
     },
     actions: {
+        GET_TODO: async(context, payload) => {
+            let url = 'http://www.prime-wood.ru/mebel-dlya-personala/ofisnaya-mebel-ekonom?_json=1';
+            let { data } = await axios.get(url)
+            context.commit('SET_TODO', data)
+        },
 
         loadItems(context) {
+            var base_url = process.env.NODE_ENV !== 'production' ? 'https://prime-wood.ru/' : ''
+            if (base_url !== 'production') {
+                let url = [
+                    `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=33&option_value_id=778`,
+                    `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=23&option_value_id=778`,
+                    `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=3&option_value_id=778`,
+                    `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=34&option_value_id=778`,
+                    `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=4&option_value_id=778`,
+                    `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=41&option_value_id=778`,
+                    `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=44&option_value_id=778`,
+                    `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=1&option_value_id=778`,
+                ];
 
-            let data = process.env.NODE_ENV !== 'production' ? 'https://prime-wood.ru/' : ''
 
-            var url = []
-            let tab_groups = window.currentParamPage.tab_groups
-            let product_id = window.currentParamPage.product_id
-            for (let index = 0; index < tab_groups.length; index++) {
-                let urlString = `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=${product_id}=&group_id=${tab_groups[index].group_id}`
-                url.push(urlString)
-            }
-            for (let index = 0; index < url.length; index++) {
-                fetch(url[index], {
-                        method: "GET",
-                        credentials: "include",
-                        withCredentials: true
-                    })
-                    .then((response) => response.json())
-                    .then((json) => {
-                        context.commit('LOAD_ITEM', json);
-                    });
+                for (let index = 0; index < url.length; index++) {
+                    fetch(url[index], {
+                            method: "GET",
+                            credentials: "include",
+                            withCredentials: true
+                        })
+                        .then((response) => response.json())
+                        .then((json) => {
+                            context.commit('LOAD_ITEM', json);
+                        });
+
+                }
+            } else {
+
+                var url = []
+                let tab_groups = window.currentParamPage.tab_groups
+                let product_id = window.currentParamPage.product_id
+                for (let index = 0; index < tab_groups.length; index++) {
+                    let urlString = `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=${product_id}=&group_id=${tab_groups[index].group_id}`
+                    url.push(urlString)
+                }
+
+                // let url = `https://prime-wood.ru/index.php?route=checkout/test/cart/info`;
+                for (let index = 0; index < url.length; index++) {
+                    fetch(url[index], {
+                            method: "GET",
+                            credentials: "include",
+                            withCredentials: true
+                        })
+                        .then((response) => response.json())
+                        .then((json) => {
+                            context.commit('LOAD_ITEM', json);
+                        });
+
+                }
             }
 
 

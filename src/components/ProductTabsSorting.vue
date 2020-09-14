@@ -6,48 +6,18 @@
           <div class="col-sm-12">
             <div class="wrapperSelect">
               <div class="list_category">
-                <div class="checkbox" v-for="(value, index) in categories" :key="index">
+                <div class="checkbox" v-for="(value, index) in categories.tab_groups" :key="index">
                   <input
                     class="custom-checkbox"
                     type="radio"
                     :id="'color'+index"
                     name="color"
-                    :value="value.id"
+                    :value="value.group_id"
                     v-model="selectCategory"
                   />
-                  <label :for="'color'+index">{{value.category}}</label>
+                  <label :for="'color'+index">{{value.name}}</label>
                 </div>
               </div>
-              <!-- <div class="__select" :data-state="activeValueBrand" @click="openSelectBrand()">
-                <div class="__select__title" data-default="Option 0">{{ selectBrandName }}</div>
-                <div class="__select__content">
-                  <input
-                    id="singleSelectbrands0"
-                    class="__select__input"
-                    type="radio"
-                    name="singleSelect"
-                    checked
-                  />
-                  <template v-for="(brand, index) in brands">
-                    <input
-                      :id="'singleSelectbrands0'+index"
-                      class="__select__input"
-                      type="radio"
-                      name="singleSelect"
-                      :key="'singleSelectbrands0'+index"
-                      :value="brand.brand"
-                      v-model="selectBrand"
-                    />
-                    <label
-                      :key="'singleSelectbrands1'+index"
-                      :for="'singleSelectbrands0'+index"
-                      class="__select__label"
-                      @click="activeValueCheckBrand(index)"
-                    >{{brand.brand}}</label>
-                  </template>
-                </div>
-              </div>-->
-
               <div class="buttom_sort">
                 <span>Сортировать:</span>
                 <div class="__select" :data-state="activeValueOptions" @click="openSelectOptions()">
@@ -147,145 +117,145 @@ export default {
   },
   data() {
     return {
-      products: [
-        {
-          good_id: 12,
-          good: "Пуфик ASUS",
-          category_id: 3,
-          brand: "Asus",
-          price: 2000,
-          rating: 8,
-          photo: "asus_video.jpg",
-        },
-        {
-          good_id: 13,
-          good: "Пуфик GIGABYTE GT-740",
-          category_id: 3,
-          brand: "Gigabyte",
-          price: 6000,
-          rating: 9,
-          photo: "gigabyte_video_gt740.jpg",
-        },
-        {
-          good_id: 10,
-          good: "Стулья Lenovo A5000",
-          category_id: 2,
-          brand: "Lenovo",
-          price: 11000,
-          rating: 3,
-          photo: "lenovo_a5000.jpg",
-        },
-        {
-          good_id: 9,
-          good: "Стулья Asus Zenfone Laser",
-          category_id: 2,
-          brand: "Asus",
-          price: 12000,
-          rating: 6,
-          photo: "asus_zenfone_laser.jpg",
-        },
-        {
-          good_id: 14,
-          good: "Пуфик GIGABYTE GTX-960",
-          category_id: 3,
-          brand: "Gigabyte",
-          price: 14000,
-          rating: 10,
-          photo: "gigabyte_video_gtx960.jpg",
-        },
-        {
-          good_id: 4,
-          good: "Стол Lenovo G5030",
-          category_id: 1,
-          brand: "Lenovo",
-          price: 16000,
-          rating: 7,
-          photo: "lenovo_g5030.jpg",
-        },
-        {
-          good_id: 11,
-          good: "Стулья Lenovo P90",
-          category_id: 2,
-          brand: "Lenovo",
-          price: 16000,
-          rating: 5,
-          photo: "lenovo_p90.jpg",
-        },
-        {
-          good_id: 3,
-          good: "Стол Lenovo IdeaPad",
-          category_id: 1,
-          brand: "Lenovo",
-          price: 17000,
-          rating: 5,
-          photo: "lenovo_idea_pad.jpg",
-        },
-        {
-          good_id: 7,
-          good: "Стулья Samsung Galaxy A5",
-          category_id: 2,
-          brand: "Samsung",
-          price: 17000,
-          rating: 8,
-          photo: "samsung_galaxy_a5.jpg",
-        },
-        {
-          good_id: 5,
-          good: "Стол Acer Aspire",
-          category_id: 1,
-          brand: "Acer",
-          price: 21000,
-          rating: 8,
-          photo: "acer_aspire.jpg",
-        },
-        {
-          good_id: 6,
-          good: "Стулья Samsung Galaxy A7",
-          category_id: 2,
-          brand: "Samsung",
-          price: 30000,
-          rating: 9,
-          photo: "samsung_galaxy_a7.jpg",
-        },
-        {
-          good_id: 8,
-          good: "Стулья Apple iPhone SE",
-          category_id: 2,
-          brand: "Apple",
-          price: 38000,
-          rating: 10,
-          photo: "apple_iphone_se.jpg",
-        },
-        {
-          good_id: 1,
-          good: "Стол Apple MacBook Air",
-          category_id: 1,
-          brand: "Apple",
-          price: 60000,
-          rating: 8,
-          photo: "apple_macbook_air.jpg",
-        },
-        {
-          good_id: 2,
-          good: "Стол Apple MacBook Pro",
-          category_id: 1,
-          brand: "Apple",
-          price: 70000,
-          rating: 9,
-          photo: "apple_macbook_pro.jpg",
-        },
-      ],
-      categories: [
-        { id: 0, category: "Все категории" },
-        { id: 33, category: "Столы" },
-        { id: 23, category: "Переговорные столы" },
-        { id: 3, category: "Бенч-системы" },
-        { id: 34, category: "Тумбы" },
-        { id: 4, category: "Брифинг и приставки" },
-        { id: 41, category: "Шкафы" },
-        { id: 44, category: "Экраны" },
-        { id: 1, category: "Аксессуары" },
-      ],
+      // products: [
+      //   {
+      //     good_id: 12,
+      //     good: "Пуфик ASUS",
+      //     category_id: 3,
+      //     brand: "Asus",
+      //     price: 2000,
+      //     rating: 8,
+      //     photo: "asus_video.jpg",
+      //   },
+      //   {
+      //     good_id: 13,
+      //     good: "Пуфик GIGABYTE GT-740",
+      //     category_id: 3,
+      //     brand: "Gigabyte",
+      //     price: 6000,
+      //     rating: 9,
+      //     photo: "gigabyte_video_gt740.jpg",
+      //   },
+      //   {
+      //     good_id: 10,
+      //     good: "Стулья Lenovo A5000",
+      //     category_id: 2,
+      //     brand: "Lenovo",
+      //     price: 11000,
+      //     rating: 3,
+      //     photo: "lenovo_a5000.jpg",
+      //   },
+      //   {
+      //     good_id: 9,
+      //     good: "Стулья Asus Zenfone Laser",
+      //     category_id: 2,
+      //     brand: "Asus",
+      //     price: 12000,
+      //     rating: 6,
+      //     photo: "asus_zenfone_laser.jpg",
+      //   },
+      //   {
+      //     good_id: 14,
+      //     good: "Пуфик GIGABYTE GTX-960",
+      //     category_id: 3,
+      //     brand: "Gigabyte",
+      //     price: 14000,
+      //     rating: 10,
+      //     photo: "gigabyte_video_gtx960.jpg",
+      //   },
+      //   {
+      //     good_id: 4,
+      //     good: "Стол Lenovo G5030",
+      //     category_id: 1,
+      //     brand: "Lenovo",
+      //     price: 16000,
+      //     rating: 7,
+      //     photo: "lenovo_g5030.jpg",
+      //   },
+      //   {
+      //     good_id: 11,
+      //     good: "Стулья Lenovo P90",
+      //     category_id: 2,
+      //     brand: "Lenovo",
+      //     price: 16000,
+      //     rating: 5,
+      //     photo: "lenovo_p90.jpg",
+      //   },
+      //   {
+      //     good_id: 3,
+      //     good: "Стол Lenovo IdeaPad",
+      //     category_id: 1,
+      //     brand: "Lenovo",
+      //     price: 17000,
+      //     rating: 5,
+      //     photo: "lenovo_idea_pad.jpg",
+      //   },
+      //   {
+      //     good_id: 7,
+      //     good: "Стулья Samsung Galaxy A5",
+      //     category_id: 2,
+      //     brand: "Samsung",
+      //     price: 17000,
+      //     rating: 8,
+      //     photo: "samsung_galaxy_a5.jpg",
+      //   },
+      //   {
+      //     good_id: 5,
+      //     good: "Стол Acer Aspire",
+      //     category_id: 1,
+      //     brand: "Acer",
+      //     price: 21000,
+      //     rating: 8,
+      //     photo: "acer_aspire.jpg",
+      //   },
+      //   {
+      //     good_id: 6,
+      //     good: "Стулья Samsung Galaxy A7",
+      //     category_id: 2,
+      //     brand: "Samsung",
+      //     price: 30000,
+      //     rating: 9,
+      //     photo: "samsung_galaxy_a7.jpg",
+      //   },
+      //   {
+      //     good_id: 8,
+      //     good: "Стулья Apple iPhone SE",
+      //     category_id: 2,
+      //     brand: "Apple",
+      //     price: 38000,
+      //     rating: 10,
+      //     photo: "apple_iphone_se.jpg",
+      //   },
+      //   {
+      //     good_id: 1,
+      //     good: "Стол Apple MacBook Air",
+      //     category_id: 1,
+      //     brand: "Apple",
+      //     price: 60000,
+      //     rating: 8,
+      //     photo: "apple_macbook_air.jpg",
+      //   },
+      //   {
+      //     good_id: 2,
+      //     good: "Стол Apple MacBook Pro",
+      //     category_id: 1,
+      //     brand: "Apple",
+      //     price: 70000,
+      //     rating: 9,
+      //     photo: "apple_macbook_pro.jpg",
+      //   },
+      // ],
+      // categories: [
+      //   { id: 0, category: "Все категории" },
+      //   { id: 33, category: "Столы" },
+      //   { id: 23, category: "Переговорные столы" },
+      //   { id: 3, category: "Бенч-системы" },
+      //   { id: 34, category: "Тумбы" },
+      //   { id: 4, category: "Брифинг и приставки" },
+      //   { id: 41, category: "Шкафы" },
+      //   { id: 44, category: "Экраны" },
+      //   { id: 1, category: "Аксессуары" },
+      // ],
       brands: [
         {
           id: 0,
@@ -344,7 +314,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("products", ["getProducts", "getTest"]),
+    ...mapGetters("products", ["getProducts", "getTest", "categories"]),
     getProd() {
      var test = this.getTest;
      return test

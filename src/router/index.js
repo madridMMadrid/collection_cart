@@ -12,13 +12,14 @@ const routes = [{
     name: 'Home',
     component: Home,
     beforeEnter(from, to, next) {
+        let item = "Get groceries"
+        store.dispatch('products/GET_TODO', item)
         store.dispatch('products/loadItems');
         next();
     }
 }]
 
 const router = new VueRouter({
-    mode: 'history',
     base: process.env.BASE_URL,
     routes
 })

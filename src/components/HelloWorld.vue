@@ -1,5 +1,5 @@
 <template>
-  <div class="l-container">
+  <div class="">
     <!-- <h1>{{ getCurrentProduct.name }}</h1> -->
     <!-- <b-row class="my-5">
       <b-col sm="7">
