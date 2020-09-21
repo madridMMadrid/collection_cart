@@ -63,7 +63,9 @@
             <input v-model.number="maxPrice" type="number" />-->
 
             <!-- <button @click="clear" class="primary small">Сбросить фильтры</button> -->
-            <div class="tab-content product-list">
+
+            <!-- простой запрос получающий categories -->
+            <!-- <div class="tab-content product-list">
               <div class="product-card" v-for="product in filteredProducts" :key="product.good_id">
                 <a class="product-card-link" :href="product.href">
                   <div class="product-card-title">{{ product.name }}</div>
@@ -98,7 +100,49 @@
                   <button class="product-card-buy-button button-global button-primary-yellow"></button>
                 </div>
               </div>
+            </div> -->
+          <span v-for="(group, i) in arrProduct" :key="i">
+           <div class="tab-content product-list" v-for="(product, i) in group" :key="i" >
+             <div class="product-group_name">{{i}}</div>
+
+
+              <div class="product-card" v-for="(item, i) in product" :key="i" >
+                <a class="product-card-link" :href="item.href">
+                  <div class="product-card-title">{{ item.name }}</div>
+                  <div class="product-card-image-wrapper">
+                    <img class="product-card-image" :src="item.thumb" />
+                  </div>
+                </a>
+                <div class="product-card-scale">
+                  <div class="product-card-scale-size">{{ item.proportions.length }} см</div>
+                  <div class="product-card-scale-size">{{ item.proportions.width }} см</div>
+                  <div class="product-card-scale-size">{{ item.proportions.height }} см</div>
+                </div>
+                <div class="product-card-info">
+                  <div class="product-card-info-text green product-key">Код товара {{ item.sku }}</div>
+                  <div class="product-card-info-text green product-id">ID {{ item.product_id }}</div>
+                  <div class="product-card-info-text black">
+                    Срок доставки {{ item.delivery_days.min }}-{{ item.delivery_days.max }} дней
+                    <a
+                      class="item__compare"
+                      href
+                    ></a>
+                  </div>
+                </div>
+                <div class="product-card-buy">
+                  <div class="product-card-buy-price">
+                    <span
+                      class="product-card-buy-price-text"
+                    >{{ (Number(item.price).toFixed()).toString().replace(/(\d{1,3})(?=((\d{3})*)$)/g, " $1") }}</span>
+                    <sup class="product-card-buy-price-currency">руб</sup>
+                  </div>
+                  <PlusMinus />
+                  <button class="product-card-buy-button button-global button-primary-yellow"></button>
+                </div>
+              </div>
             </div>
+          </span>
+
           </div>
         </div>
       </div>
@@ -310,15 +354,11 @@ export default {
 
       activeValueOptions: "",
       selectOptionsName: "По порядку",
-      category: null,
+      category: 0,
     };
   },
   computed: {
-    ...mapGetters("products", ["getProducts", "getTest", "categories"]),
-    getProd() {
-     var test = this.getTest;
-     return test
-    },
+    ...mapGetters("products", ["getProducts", "categories", "arrProduct"]),
     filteredProducts() {
       // Фильтруем товары
       var filtered = this.getProducts
@@ -454,6 +494,7 @@ export default {
   color: #b8ad87;
   max-width: 90px;
   text-align: center;
+  margin-right: 10px;
 
   &:hover {
     cursor: pointer;
@@ -497,8 +538,9 @@ export default {
 .tab-content {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 30px 0px;
+  position: relative;
 
   .input-search {
     border: 1px solid #c7ccd1;
@@ -506,6 +548,11 @@ export default {
     padding: 2px 16px;
   }
   .product {
+    &-group_name {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
     &-card {
       border: 1px solid #e2e0d3;
       box-shadow: 0 30px 7px -33px rgba(0, 0, 0, 0.9);
@@ -515,6 +562,7 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      margin-right: 5px;
       &-link {
         color: #56504c;
         &:hover {
@@ -661,7 +709,7 @@ export default {
   flex-direction: column;
   .list_category {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     margin-bottom: 15px;
     padding-left: -6px;
     border: 1px solid #e0e0e0;

@@ -10,7 +10,8 @@ export default {
         realproduct: [],
         lengthProd: 0,
         test: [],
-        categories: null
+        categories: 0,
+        nameGroupUrl: 0
     },
     getters: {
         items(state) {
@@ -23,7 +24,8 @@ export default {
         getTest: state => state.test,
         categories: state => {
             return state.categories;
-        }
+        },
+        arrProduct: state => state.nameGroupUrl
     },
     mutations: {
         clearItems(state) {
@@ -75,17 +77,69 @@ export default {
         SET_TODO: (state, payload) => {
             state.categories = payload
         },
+        NEW_URL: (state, url) => {
+            state.nameGroupUrl = url
+        }
     },
     actions: {
         GET_TODO: async(context, payload) => {
-            let url = 'http://www.prime-wood.ru/mebel-dlya-personala/ofisnaya-mebel-ekonom?_json=1';
+            let url = 'http://www.prime-wood.ru/ofisnye-peregorodki/deli?_json=1'; // что то с опциями
+            // let url = 'http://www.prime-wood.ru/metallicheskaya-mebel/seyfy?_json=1'; // что то без опций
             let { data } = await axios.get(url)
             context.commit('SET_TODO', data)
+            let nameGroup = []
+            for (let i = 0; i < data.tab_groups.length; i++) {
+                if (data.options.length > 0) {
+                    let element = `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=${data.product_id}&group_id=${data.tab_groups[i].group_id}&option_value_id=${data.options[0].option_value_id}`;
+                    let elemArr = {}
+                    let elemArrUrl = {}
+                    elemArr[data.tab_groups[i].name] = element
+
+                    for (let key in elemArr) {
+                        console.log(key, elemArr[key], 'wtf')
+                        fetch(elemArr[key], {
+                                method: "GET",
+                                credentials: "include",
+                                withCredentials: true
+                            })
+                            .then((response) => response.json())
+                            .then((json) => {
+                                elemArrUrl[key] = json
+                            });
+                    }
+                    nameGroup.push(elemArrUrl)
+
+
+
+
+
+                } else {
+                    let element = `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=${data.product_id}&group_id=${data.tab_groups[i].group_id}`;
+                    let elemArr = {}
+                    let elemArrUrl = {}
+                    elemArr[data.tab_groups[i].name] = element
+                    for (var key in elemArr) {
+                        fetch(elemArr[key], {
+                                method: "GET",
+                                credentials: "include",
+                                withCredentials: true
+                            })
+                            .then((response) => response.json())
+                            .then((json) => {
+                                elemArrUrl[key] = json
+                            });
+                    }
+                    nameGroup.push(elemArrUrl)
+                }
+            }
+            context.commit('NEW_URL', nameGroup)
+
         },
 
         loadItems(context) {
             var base_url = process.env.NODE_ENV !== 'production' ? 'https://prime-wood.ru/' : ''
             if (base_url !== 'production') {
+                console.log('для разработки')
                 let url = [
                     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=33&option_value_id=778`,
                     `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=17539&group_id=23&option_value_id=778`,
@@ -111,6 +165,7 @@ export default {
 
                 }
             } else {
+                console.log('для продакшена')
 
                 var url = []
                 let tab_groups = window.currentParamPage.tab_groups
@@ -120,7 +175,6 @@ export default {
                     url.push(urlString)
                 }
 
-                // let url = `https://prime-wood.ru/index.php?route=checkout/test/cart/info`;
                 for (let index = 0; index < url.length; index++) {
                     fetch(url[index], {
                             method: "GET",
