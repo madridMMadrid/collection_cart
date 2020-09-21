@@ -100,49 +100,48 @@
                   <button class="product-card-buy-button button-global button-primary-yellow"></button>
                 </div>
               </div>
-            </div> -->
-          <span v-for="(group, i) in arrProduct" :key="i">
-           <div class="tab-content product-list" v-for="(product, i) in group" :key="i" >
-             <div class="product-group_name">{{i}}</div>
+            </div>-->
 
+            <span v-for="(group, i) in arrProduct" :key="i">
+              <div class="tab-content product-list" v-for="(product, i) in group" :key="i">
+                <div class="product-group_name">{{i}}</div>
 
-              <div class="product-card" v-for="(item, i) in product" :key="i" >
-                <a class="product-card-link" :href="item.href">
-                  <div class="product-card-title">{{ item.name }}</div>
-                  <div class="product-card-image-wrapper">
-                    <img class="product-card-image" :src="item.thumb" />
+                <div class="product-card" v-for="(item, i) in product" :key="i">
+                  <a class="product-card-link" :href="item.href">
+                    <div class="product-card-title">{{ item.name }}</div>
+                    <div class="product-card-image-wrapper">
+                      <img class="product-card-image" :src="item.thumb" />
+                    </div>
+                  </a>
+                  <div class="product-card-scale">
+                    <div class="product-card-scale-size">{{ item.proportions.length }} см</div>
+                    <div class="product-card-scale-size">{{ item.proportions.width }} см</div>
+                    <div class="product-card-scale-size">{{ item.proportions.height }} см</div>
                   </div>
-                </a>
-                <div class="product-card-scale">
-                  <div class="product-card-scale-size">{{ item.proportions.length }} см</div>
-                  <div class="product-card-scale-size">{{ item.proportions.width }} см</div>
-                  <div class="product-card-scale-size">{{ item.proportions.height }} см</div>
-                </div>
-                <div class="product-card-info">
-                  <div class="product-card-info-text green product-key">Код товара {{ item.sku }}</div>
-                  <div class="product-card-info-text green product-id">ID {{ item.product_id }}</div>
-                  <div class="product-card-info-text black">
-                    Срок доставки {{ item.delivery_days.min }}-{{ item.delivery_days.max }} дней
-                    <a
-                      class="item__compare"
-                      href
-                    ></a>
+                  <div class="product-card-info">
+                    <div class="product-card-info-text green product-key">Код товара {{ item.sku }}</div>
+                    <div class="product-card-info-text green product-id">ID {{ item.product_id }}</div>
+                    <div class="product-card-info-text black">
+                      Срок доставки {{ item.delivery_days.min }}-{{ item.delivery_days.max }} дней
+                      <a
+                        class="item__compare"
+                        href
+                      ></a>
+                    </div>
                   </div>
-                </div>
-                <div class="product-card-buy">
-                  <div class="product-card-buy-price">
-                    <span
-                      class="product-card-buy-price-text"
-                    >{{ (Number(item.price).toFixed()).toString().replace(/(\d{1,3})(?=((\d{3})*)$)/g, " $1") }}</span>
-                    <sup class="product-card-buy-price-currency">руб</sup>
+                  <div class="product-card-buy">
+                    <div class="product-card-buy-price">
+                      <span
+                        class="product-card-buy-price-text"
+                      >{{ (Number(item.price).toFixed()).toString().replace(/(\d{1,3})(?=((\d{3})*)$)/g, " $1") }}</span>
+                      <sup class="product-card-buy-price-currency">руб</sup>
+                    </div>
+                    <PlusMinus />
+                    <button class="product-card-buy-button button-global button-primary-yellow"></button>
                   </div>
-                  <PlusMinus />
-                  <button class="product-card-buy-button button-global button-primary-yellow"></button>
                 </div>
               </div>
-            </div>
-          </span>
-
+            </span>
           </div>
         </div>
       </div>
@@ -161,134 +160,6 @@ export default {
   },
   data() {
     return {
-      // products: [
-      //   {
-      //     good_id: 12,
-      //     good: "Пуфик ASUS",
-      //     category_id: 3,
-      //     brand: "Asus",
-      //     price: 2000,
-      //     rating: 8,
-      //     photo: "asus_video.jpg",
-      //   },
-      //   {
-      //     good_id: 13,
-      //     good: "Пуфик GIGABYTE GT-740",
-      //     category_id: 3,
-      //     brand: "Gigabyte",
-      //     price: 6000,
-      //     rating: 9,
-      //     photo: "gigabyte_video_gt740.jpg",
-      //   },
-      //   {
-      //     good_id: 10,
-      //     good: "Стулья Lenovo A5000",
-      //     category_id: 2,
-      //     brand: "Lenovo",
-      //     price: 11000,
-      //     rating: 3,
-      //     photo: "lenovo_a5000.jpg",
-      //   },
-      //   {
-      //     good_id: 9,
-      //     good: "Стулья Asus Zenfone Laser",
-      //     category_id: 2,
-      //     brand: "Asus",
-      //     price: 12000,
-      //     rating: 6,
-      //     photo: "asus_zenfone_laser.jpg",
-      //   },
-      //   {
-      //     good_id: 14,
-      //     good: "Пуфик GIGABYTE GTX-960",
-      //     category_id: 3,
-      //     brand: "Gigabyte",
-      //     price: 14000,
-      //     rating: 10,
-      //     photo: "gigabyte_video_gtx960.jpg",
-      //   },
-      //   {
-      //     good_id: 4,
-      //     good: "Стол Lenovo G5030",
-      //     category_id: 1,
-      //     brand: "Lenovo",
-      //     price: 16000,
-      //     rating: 7,
-      //     photo: "lenovo_g5030.jpg",
-      //   },
-      //   {
-      //     good_id: 11,
-      //     good: "Стулья Lenovo P90",
-      //     category_id: 2,
-      //     brand: "Lenovo",
-      //     price: 16000,
-      //     rating: 5,
-      //     photo: "lenovo_p90.jpg",
-      //   },
-      //   {
-      //     good_id: 3,
-      //     good: "Стол Lenovo IdeaPad",
-      //     category_id: 1,
-      //     brand: "Lenovo",
-      //     price: 17000,
-      //     rating: 5,
-      //     photo: "lenovo_idea_pad.jpg",
-      //   },
-      //   {
-      //     good_id: 7,
-      //     good: "Стулья Samsung Galaxy A5",
-      //     category_id: 2,
-      //     brand: "Samsung",
-      //     price: 17000,
-      //     rating: 8,
-      //     photo: "samsung_galaxy_a5.jpg",
-      //   },
-      //   {
-      //     good_id: 5,
-      //     good: "Стол Acer Aspire",
-      //     category_id: 1,
-      //     brand: "Acer",
-      //     price: 21000,
-      //     rating: 8,
-      //     photo: "acer_aspire.jpg",
-      //   },
-      //   {
-      //     good_id: 6,
-      //     good: "Стулья Samsung Galaxy A7",
-      //     category_id: 2,
-      //     brand: "Samsung",
-      //     price: 30000,
-      //     rating: 9,
-      //     photo: "samsung_galaxy_a7.jpg",
-      //   },
-      //   {
-      //     good_id: 8,
-      //     good: "Стулья Apple iPhone SE",
-      //     category_id: 2,
-      //     brand: "Apple",
-      //     price: 38000,
-      //     rating: 10,
-      //     photo: "apple_iphone_se.jpg",
-      //   },
-      //   {
-      //     good_id: 1,
-      //     good: "Стол Apple MacBook Air",
-      //     category_id: 1,
-      //     brand: "Apple",
-      //     price: 60000,
-      //     rating: 8,
-      //     photo: "apple_macbook_air.jpg",
-      //   },
-      //   {
-      //     good_id: 2,
-      //     good: "Стол Apple MacBook Pro",
-      //     category_id: 1,
-      //     brand: "Apple",
-      //     price: 70000,
-      //     rating: 9,
-      //     photo: "apple_macbook_pro.jpg",
-      //   },
-      // ],
       // categories: [
       //   { id: 0, category: "Все категории" },
       //   { id: 33, category: "Столы" },
@@ -360,6 +231,20 @@ export default {
   computed: {
     ...mapGetters("products", ["getProducts", "categories", "arrProduct"]),
     filteredProducts() {
+      for (let index = 0; index < this.arrProduct.length; index++) {
+        const element = this.arrProduct[index];
+        Object.entries(element).forEach(([key, value]) => {
+          var test = value.filter((product) => {
+            return (
+              this.selectCategory == 0 ||
+              product.group_id == this.selectCategory
+            );
+          });
+          console.log(test, "test");
+          // console.log(`${key}:${value}`);
+        });
+      }
+
       // Фильтруем товары
       var filtered = this.getProducts
         // По категории
@@ -401,9 +286,9 @@ export default {
       });
 
       // При необходимости сортируем в обратном направлении
-      if (this.sortDir === "desc") {
-        sorted = sorted.reverse();
-      }
+      // if (this.sortDir === "desc") {
+      //   sorted = sorted.reverse();
+      // }
 
       return sorted;
     },
@@ -415,7 +300,13 @@ export default {
     },
   },
   mounted() {},
+  created() {
+    this.test();
+  },
   methods: {
+    test() {
+      this.filteredProducts();
+    },
     activeValueCheck(index) {
       let id = this.categories.find((x) => x.id == index).category;
       this.selectCategoryName = id;

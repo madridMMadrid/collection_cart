@@ -96,7 +96,6 @@ export default {
                     elemArr[data.tab_groups[i].name] = element
 
                     for (let key in elemArr) {
-                        console.log(key, elemArr[key], 'wtf')
                         fetch(elemArr[key], {
                                 method: "GET",
                                 credentials: "include",
@@ -108,11 +107,6 @@ export default {
                             });
                     }
                     nameGroup.push(elemArrUrl)
-
-
-
-
-
                 } else {
                     let element = `https://prime-wood.ru/index.php?route=checkout/vue/product_group&_product_id=${data.product_id}&group_id=${data.tab_groups[i].group_id}`;
                     let elemArr = {}
@@ -207,14 +201,12 @@ export default {
         showOrHiddenPopupCart: (context) => {
             context.commit('SHOW_POPUP_CART');
         },
-
         plusQty: (context, product) => {
             context.commit('PLUS_QTY', product);
         },
         minusQty: (context, product) => {
             context.commit('MINUS_QTY', product);
         },
-
         changeCoff: (context, product) => {
             context.commit('CHANGE_COFF', product);
         }
