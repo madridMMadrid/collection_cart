@@ -237,7 +237,7 @@ export default {
           var test = value.filter((product) => {
             return (
               this.selectCategory == 0 ||
-              product.group_id == this.selectCategory
+              product.group_id == this.selectCategory 
             );
           });
           console.log(test, "test");
@@ -249,6 +249,7 @@ export default {
       var filtered = this.getProducts
         // По категории
         .filter((product) => {
+          console.log('test')
           return (
             this.selectCategory == 0 || product.group_id == this.selectCategory
           );
